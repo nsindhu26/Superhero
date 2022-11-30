@@ -14,7 +14,7 @@ const UserDataService = {
         },
       });
 
-      return response.data;
+      return response.data.results[0];
     } catch (err) {
       throw err;
     }

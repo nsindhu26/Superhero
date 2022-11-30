@@ -1,10 +1,13 @@
 const UserDataService = require('../services/user-data-service')
+const ScoreCalculatorService = require('../services/score-calculator-service')
 
 const ScoreHandlerService = {
-  async handleScore() {
+  async handleScore(score) {
     const userData = await UserDataService.retrieveUserData();
 
-    console.log(userData);
+    const invisibilityScore = await ScoreCalculatorService.calculateInvisibilityScore(userData.gender, score, userData.dob.age);
+
+    const invisibilityStatus = await ScoreCalculatorService.determineInvisibilityStatus(invisibilityScore)
   }
 }
 
