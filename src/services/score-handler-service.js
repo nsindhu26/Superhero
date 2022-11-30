@@ -29,6 +29,8 @@ const ScoreHandlerService = {
         console.log('CSV generated and saved in location:' + csvLocation);
       }
     });
+
+    return csvLocation;
   }
 }
 
