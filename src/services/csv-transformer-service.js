@@ -1,4 +1,4 @@
-const createCsvWriter = require('csv-writer').createObjectCsvStringifier;
+const jsonexport = require('jsonexport');
 
 const CsvTransformerService = {
   convertJsonToCsv(json) {
@@ -6,14 +6,11 @@ const CsvTransformerService = {
       json = [ json ]
     }
 
-    const csvHeaderArray = Object.keys(json[0]).map(k => ({ id: k, title: k }));
-    console.log(csvHeaderArray);
-
-    const csvStringifier = createCsvWriter({ header: csvHeaderArray });
-    console.log(csvStringifier)
-
-    const csv = `${csvStringifier.getHeaderString()}${csvStringifier.stringifyRecords(json)}`;
-    console.log(csv)
+    let csv;
+    jsonexport(json, function(err, data){
+      if (err) return console.error(err);
+      csv = data;
+    });
 
     return csv;
   }

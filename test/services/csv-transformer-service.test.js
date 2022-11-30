@@ -3,7 +3,7 @@ const CsvTransformerService = require('../../src/services/csv-transformer-servic
 describe('csv-transformer-service', () => {
 
   describe('convertJsonToCsv', () => {
-    test('calculate male score successfully', async () => {
+    test('simple json with comma converted successfully', async () => {
       const jsonData = {
         Id: "124",
         ID: "345",
@@ -13,7 +13,32 @@ describe('csv-transformer-service', () => {
 
       const csv = CsvTransformerService.convertJsonToCsv(jsonData);
 
-      expect(csv).toEqual('Id,ID,withComma,normalSentence\n124,345,"this is, a sentence with comma",this is a sentence\n');
+      expect(csv).toEqual('Id,ID,withComma,normalSentence\n' +
+        '124,345,"this is, a sentence with comma",this is a sentence');
+    });
+
+    test('nested json converted successfully', async () => {
+      const jsonData = {
+        Id: "124",
+        ID: "345",
+        sentence: {
+          withComma: "this is, a sentence with comma",
+          normalSentence: "this is a sentence",
+        },
+        arrays: [
+          {
+            array1: "arrayVal1"
+          },
+          {
+            array2: "arrayVal1"
+          }
+        ]
+      }
+
+      const csv = CsvTransformerService.convertJsonToCsv(jsonData);
+
+      expect(csv).toEqual('Id,ID,sentence.withComma,sentence.normalSentence,arrays.array1,arrays.array2\n' +
+        '124,345,"this is, a sentence with comma",this is a sentence,arrayVal1,arrayVal1');
     });
   });
 })
